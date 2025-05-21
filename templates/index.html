@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Pokémon Filter</title>
+  <style>
+    :root {
+      --bg-light: #f4f4f9;
+      --text-light: #222;
+      --card-light: #fff;
+      --accent: #ffcb05;
+
+      --bg-dark: #121212;
+      --text-dark: #f0f0f0;
+      --card-dark: #1e1e1e;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      margin: 0;
+      padding: 20px;
+      background-color: var(--bg-light);
+      color: var(--text-light);
+      transition: background 0.3s ease, color 0.3s ease;
+    }
+
+    body.dark-mode {
+      background-color: var(--bg-dark);
+      color: var(--text-dark);
+    }
+
+    h1 {
+      font-size: 2rem;
+      margin-bottom: 20px;
+    }
+
+    form {
+      background-color: var(--card-light);
+      padding: 20px;
+      border-radius: 12px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+      max-width: 800px;
+      margin: 0 auto 40px;
+      transition: background 0.3s;
+    }
+
+    body.dark-mode form {
+      background-color: var(--card-dark);
+      box-shadow: 0 2px 10px rgba(255, 255, 255, 0.05);
+    }
+
+    form label {
+      display: block;
+      margin-top: 10px;
+      font-weight: bold;
+    }
+
+    form select,
+    form input {
+      width: 100%;
+      padding: 8px 10px;
+      margin-top: 5px;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+      font-size: 14px;
+    }
+
+    form button {
+      margin-top: 20px;
+      padding: 10px 20px;
+      background-color: var(--accent);
+      border: none;
+      font-weight: bold;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+
+    form button:hover {
+      background-color: #e6b800;
+    }
+
+    .dark-mode-toggle {
+      position: fixed;
+      top: 10px;
+      right: 20px;
+      font-size: 14px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      z-index: 1000;
+    }
+
+    .results-container {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 20px;
+    }
+
+    .card {
+      background-color: var(--card-light);
+      border: 1px solid #ddd;
+      padding: 16px;
+      width: 220px;
+      border-radius: 16px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+      transition: background 0.3s;
+    }
+
+    body.dark-mode .card {
+      background-color: var(--card-dark);
+      border-color: #333;
+      box-shadow: 2px 2px 10px #000;
+    }
+
+    img {
+      max-width: 100%;
+      height: auto;
+      border-radius: 10px;
+      margin-top: 10px;
+    }
+
+    .moves {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-top: 10px;
+      justify-content: center;
+    }
+
+    .move {
+      background-color: #eee;
+      padding: 5px 10px;
+      border-radius: 5px;
+      font-size: 13px;
+      text-transform: capitalize;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+
+    body.dark-mode .move {
+      background-color: #2a2a2a;
+      color: #eee;
+      box-shadow: 0 2px 5px rgba(255,255,255,0.05);
+    }
+
+    textarea {
+      width: 90%;
+      max-width: 800px;
+      margin-top: 20px;
+      padding: 10px;
+      font-family: monospace;
+      font-size: 14px;
+      border-radius: 6px;
+    }
+
+    @media screen and (max-width: 600px) {
+      .card {
+        width: 100%;
+      }
+
+      form {
+        padding: 15px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <label class="dark-mode-toggle">
+    <input type="checkbox" id="darkToggle" checked>
+    🌙 Dark Mode
+  </label>
+
+  <h1>🌟 Random Pokémon Search Tool</h1>
+    <form method="POST">
+        <h3>Search Filters</h3>
+        <label for="type">Type:</label>
+        <select name="type" id="type">
+            <option value="all">All Types</option>
+            <option value="bug">Bug</option>
+            <option value="dark">Dark</option>
+            <option value="dragon">Dragon</option>
+            <option value="electric">Electric</option>
+            <option value="fairy">Fairy</option>
+            <option value="fighting">Fighting</option>
+            <option value="fire">Fire</option>
+            <option value="flying">Flying</option>
+            <option value="ghost">Ghost</option>
+            <option value="grass">Grass</option>
+            <option value="ground">Ground</option>
+            <option value="ice">Ice</option>
+            <option value="normal">Normal</option>
+            <option value="poison">Poison</option>
+            <option value="psychic">Psychic</option>
+            <option value="rock">Rock</option>
+            <option value="steel">Steel</option>
+            <option value="water">Water</option>
+        </select><br>
+        <label for="region">Select Region:</label>
+        <select name="region" id="region">
+            <option value="blueberry">Blueberry Academy</option>
+            <option value="all">All Regions</option>
+            <option value="kanto">Kanto</option>
+            <option value="johto">Johto</option>
+            <option value="hoenn">Hoenn</option>
+            <option value="sinnoh">Sinnoh</option>
+            <option value="unova">Unova</option>
+            <option value="kalos">Kalos</option>
+            <option value="alola">Alola</option>
+            <option value="galar">Galar</option>
+            <option value="paldea">Paldea</option>
+        </select><br>
+    
+        <label for="evolved">Fully Evolved:</label>
+        <select name="evolved" id="evolved">
+            <option value="yes">Yes</option>
+            <option value="no">No</option>
+        </select><br>
+    
+        <label for="min_bst">Minimum Base Stat Total:</label>
+        <input type="number" name="min_bst" id="min_bst" placeholder="Min BST" value="0"><br>
+    
+        <label for="max_bst">Maximum Base Stat Total:</label>
+        <input type="number" name="max_bst" id="max_bst" placeholder="Max BST" value="2000"><br>
+    
+        <label for="num_random">How many random Pokémon to display?</label>
+        <input type="number" name="num_random" id="num_random" placeholder="Number" value="6"><br>
+    
+        <label for="random_moves">Random Moves:</label>
+        <select name="random_moves" id="random_moves">
+            <option value="on">Yes</option>
+            <option value="off">No</option>
+        </select><br><br>
+    
+        <button type="submit">Search</button>
+    </form>
+    {% if results %}
+        <h2>🎲 Results</h2>
+        <div class="results-container">
+            {% for poke in results %}
+                <div class="card">
+                    <h3>#{{ poke.dex }} - {{ poke.name }}</h3>
+                    <p>Types: {{ poke.types }}</p>
+                    <p>Ability: {{ poke.ability|capitalize }}</p>  <!-- Display the ability here -->
+                    <p>Tera Type: {{ poke.tera_type|capitalize }}</p>  <!-- Display the Tera Type here -->
+                    <img src="{{ poke.sprite }}" alt="{{ poke.name }}">
+                    
+                    {% if poke.moves %}
+                        <div class="moves">
+                            {% for move in poke.moves|sort(reverse=True) %}
+                                <span class="move">{{ move }}</span>
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        <p>No random moves available.</p>
+                    {% endif %}
+                </div>            
+            {% endfor %}
+        </div>
+        <h3>Pokémon Showdown Export/Import Format</h3>
+        <textarea id="showdown-export-box" rows="10" cols="50" readonly>{{ showdown_export }}</textarea>
+        <br>
+        <button onclick="copyShowdownFormat()">Copy to Clipboard</button>
+    {% endif %}
+    <script>
+        const toggle = document.getElementById('darkToggle');
+        const body = document.body;
+    
+        function applyDarkMode(isDark) {
+          if (isDark) {
+            body.classList.add('dark-mode');
+            localStorage.setItem('darkMode', 'enabled');
+          } else {
+            body.classList.remove('dark-mode');
+            localStorage.setItem('darkMode', 'disabled');
+          }
+        }
+    
+        toggle.addEventListener('change', () => {
+          applyDarkMode(toggle.checked);
+        });
+    
+        const saved = localStorage.getItem('darkMode');
+        if (saved === null || saved === 'enabled') {
+          toggle.checked = true;
+          applyDarkMode(true);
+        } else {
+          toggle.checked = false;
+          applyDarkMode(false);
+        }
+    
+        function copyShowdownFormat() {
+          var copyText = document.getElementById("showdown-export-box");
+          copyText.select();
+          copyText.setSelectionRange(0, 99999);
+          document.execCommand("copy");
+          alert("Copied to clipboard!");
+        }
+      </script>
+    </body>
+    </html>    
