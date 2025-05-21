@@ -3,9 +3,241 @@
 <head>
   <meta charset="UTF-8" />
   <title>Pokémon Filter</title>
+  <style>
+    :root {
+      --bg-light: #f4f4f9;
+      --text-light: #222;
+      --card-light: #fff;
+      --accent: #ffcb05;
+
+      --bg-dark: #121212;
+      --text-dark: #f0f0f0;
+      --card-dark: #1e1e1e;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      margin: 0;
+      padding: 20px;
+      background-color: var(--bg-light);
+      color: var(--text-light);
+      transition: background 0.3s ease, color 0.3s ease;
+    }
+
+    body.dark-mode {
+      background-color: var(--bg-dark);
+      color: var(--text-dark);
+    }
+
+    h1 {
+      font-size: 2rem;
+      margin-bottom: 20px;
+    }
+
+    form {
+      background-color: var(--card-light);
+      padding: 20px;
+      border-radius: 12px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+      max-width: 800px;
+      margin: 0 auto 40px;
+      transition: background 0.3s;
+    }
+
+    body.dark-mode form {
+      background-color: var(--card-dark);
+      box-shadow: 0 2px 10px rgba(255, 255, 255, 0.05);
+    }
+
+    form label {
+      display: block;
+      margin-top: 10px;
+      font-weight: bold;
+    }
+
+    form select,
+    form input {
+      width: 100%;
+      padding: 8px 10px;
+      margin-top: 5px;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+      font-size: 14px;
+    }
+
+    form button {
+      margin-top: 20px;
+      padding: 10px 20px;
+      background-color: var(--accent);
+      border: none;
+      font-weight: bold;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+
+    form button:hover {
+      background-color: #e6b800;
+    }
+
+    .dark-mode-toggle {
+      position: fixed;
+      top: 10px;
+      right: 20px;
+      font-size: 14px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      z-index: 1000;
+    }
+
+    .results-container {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 20px;
+    }
+
+    .card {
+      background-color: var(--card-light);
+      border: 1px solid #ddd;
+      padding: 16px;
+      width: 220px;
+      border-radius: 16px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+      transition: background 0.3s;
+    }
+
+    body.dark-mode .card {
+      background-color: var(--card-dark);
+      border-color: #333;
+      box-shadow: 2px 2px 10px #000;
+    }
+
+    img {
+      max-width: 100%;
+      height: auto;
+      border-radius: 10px;
+      margin-top: 10px;
+    }
+
+    .moves {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-top: 10px;
+      justify-content: center;
+    }
+
+    .move {
+      background-color: #eee;
+      padding: 5px 10px;
+      border-radius: 5px;
+      font-size: 13px;
+      text-transform: capitalize;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+
+    body.dark-mode .move {
+      background-color: #2a2a2a;
+      color: #eee;
+      box-shadow: 0 2px 5px rgba(255,255,255,0.05);
+    }
+
+    textarea {
+      width: 90%;
+      max-width: 800px;
+      margin-top: 20px;
+      padding: 10px;
+      font-family: monospace;
+      font-size: 14px;
+      border-radius: 6px;
+    }
+
+    @media screen and (max-width: 600px) {
+      .card {
+        width: 100%;
+      }
+
+      form {
+        padding: 15px;
+      }
+    }
+  </style>
+  <title>Pokémon Filter</title>
   <!-- your styles here (keep what you have) -->
 </head>
 <body>
+  <label class="dark-mode-toggle">
+    <input type="checkbox" id="darkToggle" checked>
+    🌙 Dark Mode
+  </label>
+
+  <h1>🌟 Random Pokémon Search Tool</h1>
+  <form id="pokemonForm">
+    <h3>Search Filters</h3>
+    <label for="type">Type:</label>
+    <select name="type" id="type">
+      <option value="all">All Types</option>
+      <option value="bug">Bug</option>
+      <option value="dark">Dark</option>
+      <option value="dragon">Dragon</option>
+      <option value="electric">Electric</option>
+      <option value="fairy">Fairy</option>
+      <option value="fighting">Fighting</option>
+      <option value="fire">Fire</option>
+      <option value="flying">Flying</option>
+      <option value="ghost">Ghost</option>
+      <option value="grass">Grass</option>
+      <option value="ground">Ground</option>
+      <option value="ice">Ice</option>
+      <option value="normal">Normal</option>
+      <option value="poison">Poison</option>
+      <option value="psychic">Psychic</option>
+      <option value="rock">Rock</option>
+      <option value="steel">Steel</option>
+      <option value="water">Water</option>
+    </select><br>
+    <label for="region">Select Region:</label>
+    <select name="region" id="region">
+      <option value="blueberry">Blueberry Academy</option>
+      <option value="all">All Regions</option>
+      <option value="kanto">Kanto</option>
+      <option value="johto">Johto</option>
+      <option value="hoenn">Hoenn</option>
+      <option value="sinnoh">Sinnoh</option>
+      <option value="unova">Unova</option>
+      <option value="kalos">Kalos</option>
+      <option value="alola">Alola</option>
+      <option value="galar">Galar</option>
+      <option value="paldea">Paldea</option>
+    </select><br>
+
+    <label for="evolved">Fully Evolved:</label>
+    <select name="evolved" id="evolved">
+      <option value="yes">Yes</option>
+      <option value="no">No</option>
+    </select><br>
+
+    <label for="min_bst">Minimum Base Stat Total:</label>
+    <input type="number" name="min_bst" id="min_bst" placeholder="Min BST" value="0"><br>
+
+    <label for="max_bst">Maximum Base Stat Total:</label>
+    <input type="number" name="max_bst" id="max_bst" placeholder="Max BST" value="2000"><br>
+
+    <label for="num_random">How many random Pokémon to display?</label>
+    <input type="number" name="num_random" id="num_random" placeholder="Number" value="6"><br>
+
+    <label for="random_moves">Random Moves:</label>
+    <select name="random_moves" id="random_moves">
+      <option value="on">Yes</option>
+      <option value="off">No</option>
+    </select><br><br>
+
   <!-- Your form here, same as you have, but remove method="POST" -->
 
   <form id="pokemonForm">
@@ -13,11 +245,212 @@
     <button type="submit">Search</button>
   </form>
 
+  <div id="resultsSection" style="display:none;">
+    <h2>🎲 Results</h2>
+    <div class="results-container" id="resultsContainer"></div>
+
+    <h3>Pokémon Showdown Export/Import Format</h3>
+    <textarea id="showdown-export-box" rows="10" cols="50" readonly></textarea>
+    <br>
+    <button onclick="copyShowdownFormat()">Copy to Clipboard</button>
+  </div>
   <div id="resultsContainer"></div>
 
   <textarea id="showdownExportBox" rows="10" cols="50" readonly style="display:none;"></textarea>
   <button id="copyButton" style="display:none;">Copy to Clipboard</button>
 
+<script>
+  // Sample Pokémon data (replace with your full dataset)
+  const pokemonData = [
+    {
+      dex: 25,
+      name: "Pikachu",
+      types: ["electric"],
+      ability: "static",
+      tera_type: "electric",
+      sprite: "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/25.png",
+      bst: 320,
+      evolved: true,
+      region: "kanto",
+      moves: ["thunderbolt", "quickattack", "iron_tail", "volt_tackle"]
+    },
+    {
+      dex: 1,
+      name: "Bulbasaur",
+      types: ["grass", "poison"],
+      ability: "overgrow",
+      tera_type: "grass",
+      sprite: "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/1.png",
+      bst: 318,
+      evolved: false,
+      region: "kanto",
+      moves: ["vine_whip", "razor_leaf", "sleep_powder", "tackle"]
+    },
+    {
+      dex: 150,
+      name: "Mewtwo",
+      types: ["psychic"],
+      ability: "pressure",
+      tera_type: "psychic",
+      sprite: "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/150.png",
+      bst: 680,
+      evolved: true,
+      region: "kanto",
+      moves: ["psystrike", "recover", "shadow_ball", "calm_mind"]
+    },
+    // Add more Pokémon objects here...
+  ];
+
+  const form = document.getElementById('pokemonForm');
+  const resultsSection = document.getElementById('resultsSection');
+  const resultsContainer = document.getElementById('resultsContainer');
+  const showdownExportBox = document.getElementById('showdown-export-box');
+
+  form.addEventListener('submit', (e) => {
+    e.preventDefault();
+
+    // Gather filter values
+    const filters = {
+      type: form.type.value,
+      region: form.region.value,
+      evolved: form.evolved.value,
+      min_bst: Number(form.min_bst.value) || 0,
+      max_bst: Number(form.max_bst.value) || 2000,
+      num_random: Number(form.num_random.value) || 6,
+      random_moves: form.random_moves.value,
+    };
+
+    // Filter Pokémon
+    let filtered = pokemonData.filter(poke => {
+      // Type filter
+      if (filters.type !== 'all' && !poke.types.includes(filters.type)) {
+        return false;
+      }
+      // Region filter
+      if (filters.region !== 'all' && poke.region !== filters.region && filters.region !== 'blueberry') {
+        return false;
+      }
+      // evolved filter
+      if (filters.evolved === 'yes' && !poke.evolved) {
+        return false;
+      }
+      if (filters.evolved === 'no' && poke.evolved) {
+        return false;
+      }
+      // bst filter
+      if (poke.bst < filters.min_bst || poke.bst > filters.max_bst) {
+        return false;
+      }
+      return true;
+    });
+
+    // If blueberry region selected, you can do special logic here or skip for now.
+    // For demo, we'll treat 'blueberry' as no filter.
+
+    // Select random Pokémon from filtered list
+    const shuffled = filtered.sort(() => 0.5 - Math.random());
+    const selected = shuffled.slice(0, filters.num_random);
+
+    // Render results
+    renderResults(selected, filters.random_moves);
+  });
+
+  function renderResults(pokemonList, randomMovesSetting) {
+    resultsContainer.innerHTML = '';
+    if (pokemonList.length === 0) {
+      resultsContainer.innerHTML = '<p>No Pokémon match your filters.</p>';
+      showdownExportBox.value = '';
+      resultsSection.style.display = 'block';
+      return;
+    }
+
+    let showdownText = '';
+
+    pokemonList.forEach(poke => {
+      // Determine moves to show
+      let movesToShow = [];
+      if (randomMovesSetting === 'on' && poke.moves && poke.moves.length > 0) {
+        // Randomize and pick up to 4 moves
+        movesToShow = [...poke.moves].sort(() => 0.5 - Math.random()).slice(0, 4);
+      }
+
+      // Build Pokémon card
+      const card = document.createElement('div');
+      card.classList.add('card');
+
+      card.innerHTML = `
+        <h3>#${poke.dex} - ${poke.name}</h3>
+        <p>Types: ${poke.types.join(', ')}</p>
+        <p>Ability: ${capitalize(poke.ability)}</p>
+        <p>Tera Type: ${capitalize(poke.tera_type)}</p>
+        <img src="${poke.sprite}" alt="${poke.name}">
+      `;
+
+      if (movesToShow.length > 0) {
+        const movesDiv = document.createElement('div');
+        movesDiv.classList.add('moves');
+        movesToShow.forEach(move => {
+          const moveSpan = document.createElement('span');
+          moveSpan.classList.add('move');
+          moveSpan.textContent = move.replace(/_/g, ' ');
+          movesDiv.appendChild(moveSpan);
+        });
+        card.appendChild(movesDiv);
+      } else {
+        const noMovesP = document.createElement('p');
+        noMovesP.textContent = 'No random moves available.';
+        card.appendChild(noMovesP);
+      }
+
+      resultsContainer.appendChild(card);
+
+      // Build showdown export text for each Pokémon
+      showdownText += `[${poke.name}]\nAbility: ${capitalize(poke.ability)}\nTera Type: ${capitalize(poke.tera_type)}\nMoves: ${movesToShow.join(', ')}\n\n`;
+    });
+
+    showdownExportBox.value = showdownText.trim();
+    resultsSection.style.display = 'block';
+  }
+
+  function capitalize(str) {
+    if (!str) return '';
+    return str.charAt(0).toUpperCase() + str.slice(1);
+  }
+
+  function copyShowdownFormat() {
+    showdownExportBox.select();
+    showdownExportBox.setSelectionRange(0, 99999); // For mobile
+    document.execCommand('copy');
+    alert('Copied to clipboard!');
+  }
+
+  // Dark mode toggle logic (unchanged)
+  const toggle = document.getElementById('darkToggle');
+  const body = document.body;
+
+  function applyDarkMode(isDark) {
+    if (isDark) {
+      body.classList.add('dark-mode');
+      localStorage.setItem('darkMode', 'enabled');
+    } else {
+      body.classList.remove('dark-mode');
+      localStorage.setItem('darkMode', 'disabled');
+    }
+  }
+
+  toggle.addEventListener('change', () => {
+    applyDarkMode(toggle.checked);
+  });
+
+  const saved = localStorage.getItem('darkMode');
+  if (saved === null || saved === 'enabled') {
+    toggle.checked = true;
+    applyDarkMode(true);
+  } else {
+    toggle.checked = false;
+    applyDarkMode(false);
+  }
+</script>
   <script>
     const REGION_DEX_RANGES = {
       kanto: [1, 151],
